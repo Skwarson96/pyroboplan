@@ -2,8 +2,9 @@ Motion Planning
 ===============
 
 Motion planning is a broad area of robotics, and often consists of several components.
-In this page, we will discuss some of these components and where you can find them within the ``pyroboplan`` library.
+You can learn more from the blog post `How Do Robot Manipulators Move? <https://roboticseabass.com/2024/06/30/how-do-robot-manipulators-move>`_ or the `Robotics Developers Day 2024 presentation <https://youtu.be/YYRlypz9ZgE?si=_gavTnLokcEldaQX>`_.
 
+In this page, we will discuss some of these components and where you can find them within the ``pyroboplan`` library.
 
 Robot Modeling and Kinematics
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -38,8 +39,6 @@ These include **forward kinematics** (computing transforms from joint positions)
 
 You can also use the collision model to perform collision checking at specific states.
 This uses the `HPP-FCL <https://github.com/humanoid-path-planner/hpp-fcl>`_ library internally, as well as a list of the active collision pairs in the model.
-While the example below activates all collision pairs, this is not always useful since there may be bodies that can never collide, or bodies that always collide because of how the geometric primitives or meshes are placed in the model.
-Some tools like the `MoveIt Setup Assistant <https://moveit.picknik.ai/main/doc/examples/setup_assistant/setup_assistant_tutorial.html>`_ generate "good" lists of collision pairs automatically by sampling over the set of valid robot states and checking collisions.
 
 .. code-block:: python
 
@@ -50,10 +49,22 @@ Some tools like the `MoveIt Setup Assistant <https://moveit.picknik.ai/main/doc/
         model, data, collision_model, collision_data, q, False,
     )
 
+While the example above activates all collision pairs, this is not always useful since there may be bodies that can never collide, or bodies that always collide because of how the geometric primitives or meshes are placed in the model.
+These excluded collisions are kept in a `Semantic Robot Description Format (SRDF) <https://moveit.picknik.ai/main/doc/examples/urdf_srdf/urdf_srdf_tutorial.html#srdf>`_ file.
+Some tools like the `MoveIt Setup Assistant <https://moveit.picknik.ai/main/doc/examples/setup_assistant/setup_assistant_tutorial.html>`_ can generate "good" lists of collision pairs automatically by sampling over the set of valid robot states and checking collisions.
+
+In Pinocchio, you can exclude collision pairs using an SRDF file as follows:
+
+.. code-block:: python
+
+    srdf_filename = "/path/to/your.srdf"
+    collision_model.addAllCollisionPairs()
+    pinocchio.removeCollisionPairs(model, collision_model, srdf_filename)
+
 The :examples:`Introduction to Pinocchio examples folder <intro_pinocchio>` includes code examples for robot models that are manually created and automatically imported from URDF.
 
 Additionally, the `pyroboplan.core module <api/pyroboplan.core.html>`_ contains several tools that abstract away such common Pinocchio operations for motion planning.
-One example can be found :examples:`here <example_collision_along_path.py>`.
+One example can be found :examples:`here <collision_along_path.py>`.
 
 .. image:: _static/images/collision_checking.png
     :width: 600
@@ -76,7 +87,7 @@ However, for most robotics applications, we rely on **numerical methods** instea
 * Additional constraints, such as joint limits, Cartesian pose limits, or collision avoidance, are difficult to enforce analytically.
 
 The `pyroboplan.ik module <api/pyroboplan.ik.html>`_ contains implementations for IK solvers.
-You can also try running the :examples:`differential IK example <example_differential_ik.py>`.
+You can also try running the :examples:`fixed arm differential IK <differential_ik.py>` and :examples:`whole-body differential IK <differential_ik_whole_body.py>` examples.
 
 .. image:: _static/images/inverse_kinematics.png
     :width: 600
@@ -115,7 +126,8 @@ Currently, all the planners in ``pyroboplan`` (such as RRT and Cartesian interpo
 Online planning and control is often done through optimization techniques like Model Predictive Control (MPC).
 
 The `pyroboplan.planning module <api/pyroboplan.planning.html>`_ contains implementations for a number of motion planners.
-You can also try running the :examples:`RRT example <example_rrt.py>`, :examples:`PRM example <example_prm.py>`, or :examples:`Cartesian planning example <example_cartesian_path.py>`.
+For an introduction to sampling-based motion planning on two degree-of-freedom robot models, look at the :examples:`2-DOF RRT <rrt_2dof.py>` and :examples:`2-DOF PRM <prm_2dof.py>` examples.
+You can also try the :examples:`RRT example <rrt_panda.py>` and :examples:`PRM example <prm_panda.py>` for a full Franka robot arm.
 
 .. image:: _static/images/bidirectional_rrt_star.png
     :width: 600
@@ -124,6 +136,8 @@ You can also try running the :examples:`RRT example <example_rrt.py>`, :examples
 .. image:: _static/images/prm_graph.png
     :width: 600
     :alt: Identifying a collision-free path using A* on a pre-constructed PRM.
+
+For motion planning along a task-space (or Cartesian) trajectory, check out the :examples:`Cartesian planning example <cartesian_path.py>`.
 
 .. image:: _static/images/cartesian_planning.png
     :width: 600
@@ -138,7 +152,7 @@ Often, a fixed set of kinematic (position/velocity/acceleration/jerk) and dynami
 Sometimes, these limits can also be task-dependent; for example, if manipulating fragile objects or objects that cannot be placed in certain configurations (e.g., moving a glass of water without spilling).
 
 The `pyroboplan.trajectory module <api/pyroboplan.trajectory.html>`_ contains trajectory generation and optimization implementations.
-You can try running the corresponding :examples:`trajectory generation <example_trajectory_generation.py>` and :examples:`trajectory optimization <example_trajectory_optimization.py>` examples.
+You can try running the corresponding :examples:`trajectory generation <trajectory_generation.py>` and :examples:`trajectory optimization <trajectory_optimization.py>` examples.
 
 .. image:: _static/images/trajectory_generation.png
     :width: 720

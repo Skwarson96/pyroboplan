@@ -6,10 +6,6 @@ from pyroboplan.models.two_dof import (
 from pyroboplan.planning.prm import PRMPlanner, PRMPlannerOptions
 
 
-# Use a fixed seed for random number generation in tests.
-np.random.seed(1234)
-
-
 def construct_roadmap_test(options):
     # Initialize models, and construct and return a planner with the provided options
     model, collision_model, _ = load_models()
@@ -32,7 +28,7 @@ def test_construct_roadmap():
 def test_construct_roadmap_prm_star():
     # Initialize the roadmap using PRM*
     options = PRMPlannerOptions(prm_star=True, max_construction_nodes=100)
-    planner = construct_roadmap_test(options)
+    construct_roadmap_test(options)
 
 
 def test_plan_trivial_prm():
@@ -63,6 +59,7 @@ def test_prm():
         max_neighbor_connections=5,
         max_construction_nodes=2500,
         construction_timeout=1.0,
+        rng_seed=1234,
         prm_file=None,
     )
 

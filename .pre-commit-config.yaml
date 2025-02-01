@@ -1,7 +1,7 @@
 repos:
   # Runs pre-commit hooks and other file format checks.
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.5.0
+    rev: v5.0.0
     hooks:
       - id: check-added-large-files
       - id: check-ast
@@ -29,13 +29,19 @@ repos:
 
   # Autoformats Python code.
   - repo: https://github.com/psf/black
-    rev: 24.3.0
+    rev: 24.10.0
     hooks:
       - id: black
 
+  # Removes unused imports.
+  - repo: https://github.com/PyCQA/autoflake
+    rev: v2.3.1
+    hooks:
+      - id: autoflake
+
   # Finds spelling issues in code.
   - repo: https://github.com/codespell-project/codespell
-    rev: v2.2.6
+    rev: v2.4.0
     hooks:
       - id: codespell
 
@@ -63,6 +69,18 @@ repos:
 
   # Checks links in markdown files.
   - repo: https://github.com/tcort/markdown-link-check
-    rev: v3.12.1
+    rev: v3.13.6
     hooks:
       - id: markdown-link-check
+
+ci:
+  autofix_commit_msg: |
+    [pre-commit.ci] auto fixes from pre-commit.com hooks
+
+    for more information, see https://pre-commit.ci
+  autofix_prs: true
+  autoupdate_branch: ''
+  autoupdate_commit_msg: '[pre-commit.ci] pre-commit autoupdate'
+  autoupdate_schedule: weekly
+  skip: ['markdown-link-check']
+  submodules: false

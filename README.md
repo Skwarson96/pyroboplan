@@ -8,13 +8,13 @@ Educational Python library for manipulator motion planning.
 
 This library extensively uses the [Pinocchio](https://github.com/stack-of-tasks/pinocchio) Python bindings for modeling robot kinematics and dynamics.
 
-For more information, refer to the [full documentation](https://pyroboplan.readthedocs.io/en/latest/).
+For more information, refer to the [full documentation](https://pyroboplan.readthedocs.io/en/latest/), this [blog post on motion planning](https://roboticseabass.com/2024/06/30/how-do-robot-manipulators-move), or this [YouTube presentation](https://youtu.be/YYRlypz9ZgE?si=_gavTnLokcEldaQX).
 
-By Sebastian Castro, 2024
+By Sebastian Castro, 2024-2025
 
-![RRT based motion planning and trajectory execution](https://media.githubusercontent.com/media/sea-bass/pyroboplan/main/docs/source/_static/gifs/pyroboplan_rrt_traj.gif)
+![RRT based motion planning and trajectory execution](https://raw.githubusercontent.com/sea-bass/pyroboplan/main/docs/source/_static/gifs/pyroboplan_rrt_traj.gif)
 
-![Cartesian motion planning](https://media.githubusercontent.com/media/sea-bass/pyroboplan/main/docs/source/_static/gifs/pyroboplan_cartesian_path.gif)
+![Cartesian motion planning](https://raw.githubusercontent.com/sea-bass/pyroboplan/main/docs/source/_static/gifs/pyroboplan_cartesian_path.gif)
 
 ---
 
